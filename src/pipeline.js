@@ -143,10 +143,13 @@ class Pipeline extends Array {
       });
     if (!request.headers.has('User-Agent'))
       request.headers.set('User-Agent', browser.userAgent);
-
-    // Always pass Host: from request URL
-    const { host } = URL.parse(request.url);
-    request.headers.set('Host', host);
+ 
+    // Do NOT always pass Host: from request URL
+    if (!request.headers.has('Host')) {
+      const { host } = URL.parse(request.url);
+      request.headers.set('Host', host);
+    }
+    
 
     // HTTP Basic authentication
     const authenticate = { host, username: null, password: null };
